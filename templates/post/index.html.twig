@@ -17,7 +17,7 @@
                         <h3>{{post.title}}</h3>
                         <p>{{post.introduction}}</p>
                         <a href="#" class="btn btn-primary">Lire la suite</a>
-                        <a href="#" class="btn btn-link js-like">
+                        <a href="{{ path('post_like', { 'id' : post.id }) }}" class="btn btn-link js-like">
                             {% if app.user and post.isLikedByUser(app.user) %}
                                 <i class="fas fa-thumbs-up"></i>
                             {% else %}
@@ -32,4 +32,9 @@
             {% endfor %}
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/js/ajax_like.js"></script>
 {% endblock %}
