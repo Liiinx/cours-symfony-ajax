@@ -14,12 +14,34 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     /**
+     * homepage => tous les posts
+     *
      * @Route("/", name="homepage")
+     * @param PostRepository $repo
+     * @return Response
      */
     public function index(PostRepository $repo)
     {
         return $this->render('post/index.html.twig', [
             'posts' => $repo->findAll(),
+        ]);
+    }
+
+    /**
+     * pour voir un post
+     *
+     * @Route("/post/{id<^[0-9]+$>}", name="post_by_id")
+     * @param $id
+     * @return Response
+     */
+    public function postById($id)
+    {
+        $post = $this->getDoctrine()
+            ->getRepository(Post::class)
+            ->findOneBy(['id' => $id ]);
+
+        return $this->render('post/postById.html.twig', [
+            'post' => $post,
         ]);
     }
 

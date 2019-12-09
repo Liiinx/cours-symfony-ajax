@@ -1,22 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les articles !{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1 class="my-3">Nos articles</h1>
+        <h1 class="my-3">{{ post.title }}</h1>
         {% if not is_granted('ROLE_USER') %}
             <a href="{{ path('login') }}" class="my-2 btn btn-success">Connexion</a>
         {% else %}
             <a href="{{ path('logout') }}" class="my-2 btn btn-danger">Déconnexion</a>
         {% endif %}
         <div class="row">
-            {% for post in posts %}
-                <div class="col-3 mb-3">
+                <div class="col-12 mb-12">
                     <div class="border border-dark rounded p-2">
-                        <h3>{{post.title}}</h3>
-                        <p>{{post.introduction}}</p>
-                        <a href="{{ path('post_by_id', {'id' : post.id }) }}" class="btn btn-primary">Lire la suite</a>
+                        <h3>{{post.introduction}}</h3>
+                        {{post.content | raw}}
                         <a href="{{ path('post_like', { 'id' : post.id }) }}" class="btn btn-link js-like">
                             {% if app.user and post.isLikedByUser(app.user) %}
                                 <i class="fas fa-thumbs-up"></i>
@@ -29,7 +27,6 @@
                         </a>
                     </div>
                 </div>
-            {% endfor %}
         </div>
     </div>
 {% endblock %}
