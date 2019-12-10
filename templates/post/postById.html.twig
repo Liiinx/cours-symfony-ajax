@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-3">{{ post.title }}</h1>
+        <div class="row">
+            <div class="col-12 mb-12">
+                <div class="border border-dark rounded p-3">
+                    <h3>{{post.introduction}}</h3>
+                    {{post.content | raw}}
+                    <a
+{#                            ajoute les attributs pour la modal bootstraps si le user n'est pas connecté#}
+                            {% if not is_granted('ROLE_USER') %}
+                                data-toggle="modal" data-target="#exampleModal"
+                            {% endif %}
+                            href="{{ path('post_like', { 'id' : post.id }) }}" class="btn btn-link js-like">
+                        {% if app.user and post.isLikedByUser(app.user) %}
+                            <i class="fas fa-thumbs-up"></i>
+                        {% else %}
+                            <i class="far fa-thumbs-up"></i>
+                        {% endif %}
+                        <span class="js-likes">{{ post.likes | length }}</span>
+                        <span class="js-label">j'aime</span>
+                    </a>
+                    <h3 class="">Commentaires : </h3>
+                    {% for comment in comments %}
+                    <div class="row">
+                        <div class="col-12 px-4">
+                        <div class="d-inline">{{ comment.user.email }} : </div>
+                        <a
+                                {% if not is_granted('ROLE_USER') %}
+                                    data-toggle="modal" data-target="#exampleModal"
+                                {% endif %}
+                                href="{{ path('comment_like', { 'id' : comment.id }) }}" class="btn btn-link js-like-comment">
+                                {% if app.user and comment.isLikedByUser(app.user) %}
+                                    <i class="fas fa-thumbs-up"></i>
+                                {% else %}
+                                    <i class="far fa-thumbs-up"></i>
+                                {% endif %}
+                            <span class="js-likes-comment">{{ comment.commentLikes | length }}</span>
+                            <span class="js-label-comment">j'aime</span>
+                        </a>
+                        <p class="text-muted">{{ comment.content }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'parts/_dialog.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/js/ajax_like.js"></script>
+{% endblock %}
