@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Comment;
+use App\Entity\CommentLike;
 use App\Entity\Post;
 use App\Entity\PostLike;
 use App\Entity\User;
@@ -70,6 +71,13 @@ class AppFixtures extends Fixture
                 ->setPost($faker->randomElement($posts));
             $manager->persist($comment);
 
+            for ($j = 0; $j < mt_rand(0, 10); $j++) {
+                $commentLike = new CommentLike();
+                $commentLike->setComment($comment)
+                    ->setUser($faker->randomElement($users));
+
+                $manager->persist($commentLike);
+            }
         }
         $manager->flush();
     }

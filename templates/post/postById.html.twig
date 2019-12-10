@@ -11,6 +11,7 @@
                     <h3>{{post.introduction}}</h3>
                     {{post.content | raw}}
                     <a
+{#                            ajoute les attributs pour la modal bootstraps si le user n'est pas connecté#}
                             {% if not is_granted('ROLE_USER') %}
                                 data-toggle="modal" data-target="#exampleModal"
                             {% endif %}
@@ -32,13 +33,13 @@
                                 {% if not is_granted('ROLE_USER') %}
                                     data-toggle="modal" data-target="#exampleModal"
                                 {% endif %}
-                                href="#" class="btn btn-link js-like-comment">
-                            {#                                {% if app.user and post.isLikedByUser(app.user) %}#}
-                            {#                                    <i class="fas fa-thumbs-up"></i>#}
-                            {#                                {% else %}#}
-                            <i class="far fa-thumbs-up"></i>
-                            {#                                {% endif %}#}
-                            <span class="js-likes-comment">0</span>
+                                href="{{ path('comment_like', { 'id' : comment.id }) }}" class="btn btn-link js-like-comment">
+                                {% if app.user and comment.isLikedByUser(app.user) %}
+                                    <i class="fas fa-thumbs-up"></i>
+                                {% else %}
+                                    <i class="far fa-thumbs-up"></i>
+                                {% endif %}
+                            <span class="js-likes-comment">{{ comment.commentLikes | length }}</span>
                             <span class="js-label-comment">j'aime</span>
                         </a>
                         <p class="text-muted">{{ comment.content }}</p>
@@ -49,7 +50,7 @@
             </div>
         </div>
     </div>
-    {% include 'parts/dialog.html.twig' %}
+    {% include 'parts/_dialog.html.twig' %}
 {% endblock %}
 
 {% block javascripts %}

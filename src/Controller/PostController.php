@@ -88,7 +88,7 @@ class PostController extends AbstractController
             ], 200);
         }
 
-        // cas numéro 3 = user n'aime pas encore le like
+        // cas numéro 3 = user n'aime pas encore le l'article, le post
         $like = new PostLike();
         $like->setUser($user)
             ->setPost($post);

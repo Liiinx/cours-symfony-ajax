@@ -114,4 +114,18 @@ class Comment
 
         return $this;
     }
+
+    /**
+     * permet de savoir si un commentaire est liker par un user
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function isLikedByUser(User $user) : bool
+    {
+        foreach ($this->commentLikes as $commentLike) {
+            if ($commentLike->getUser() === $user) return true;
+        }
+        return false;
+    }
 }
