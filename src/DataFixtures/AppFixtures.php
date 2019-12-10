@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\PostLike;
 use App\Entity\User;
@@ -28,6 +29,7 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create();
         $users = [];
+        $posts = [];
 
         $user = new User();
         $user->setEmail('user@symfony.com')
@@ -46,11 +48,12 @@ class AppFixtures extends Fixture
         }
         for ($i = 0; $i < 20; $i++) {
             $post = new Post();
-            $post->setTitle($faker->sentence(6))
+            $post->setTitle($faker->sentence(5))
                 ->setIntroduction($faker->paragraph())
                 ->setContent('<p>' . join(',', $faker->paragraphs()) . '</p>');
 
             $manager->persist($post);
+            $posts[] = $post;
 
             for ($j = 0; $j < mt_rand(0, 10); $j++) {
                 $like = new PostLike();
@@ -60,7 +63,14 @@ class AppFixtures extends Fixture
                 $manager->persist($like);
             }
         }
+        for ($i = 0; $i < 40; $i++) {
+            $comment = new Comment();
+            $comment->setContent($faker->paragraph(3))
+                ->setUser($faker->randomElement($users))
+                ->setPost($faker->randomElement($posts));
+            $manager->persist($comment);
 
+        }
         $manager->flush();
     }
 }

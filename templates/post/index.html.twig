@@ -5,19 +5,18 @@
 {% block body %}
     <div class="container">
         <h1 class="my-3">Nos articles</h1>
-        {% if not is_granted('ROLE_USER') %}
-            <a href="{{ path('login') }}" class="my-2 btn btn-success">Connexion</a>
-        {% else %}
-            <a href="{{ path('logout') }}" class="my-2 btn btn-danger">Déconnexion</a>
-        {% endif %}
         <div class="row">
             {% for post in posts %}
                 <div class="col-3 mb-3">
                     <div class="border border-dark rounded p-2">
                         <h3>{{post.title}}</h3>
                         <p>{{post.introduction}}</p>
-                        <a href="{{ path('post_by_id', {'id' : post.id }) }}" class="btn btn-primary">Lire la suite</a>
-                        <a href="{{ path('post_like', { 'id' : post.id }) }}" class="btn btn-link js-like">
+                        <a href="{{ path('post_by_id', {'id' : post.id }) }}" class="btn btn-outline-primary">Lire la suite</a>
+                        <a
+                            {% if not is_granted('ROLE_USER') %}
+                                data-toggle="modal" data-target="#exampleModal"
+                            {% endif %}
+                                href="{{ path('post_like', { 'id' : post.id }) }}" class="btn btn-link js-like">
                             {% if app.user and post.isLikedByUser(app.user) %}
                                 <i class="fas fa-thumbs-up"></i>
                             {% else %}
@@ -32,6 +31,7 @@
             {% endfor %}
         </div>
     </div>
+    {% include 'parts/dialog.html.twig' %}
 {% endblock %}
 
 {% block javascripts %}

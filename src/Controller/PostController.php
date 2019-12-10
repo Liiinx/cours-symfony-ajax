@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\PostLike;
 use App\Repository\PostLikeRepository;
@@ -39,9 +40,15 @@ class PostController extends AbstractController
         $post = $this->getDoctrine()
             ->getRepository(Post::class)
             ->findOneBy(['id' => $id ]);
+//        var_dump($post->getComments());
+        $comments = $this->getDoctrine()
+            ->getRepository(Comment::class)
+            ->findBy(['post' => $post ]);
+//        var_dump($comments);
 
         return $this->render('post/postById.html.twig', [
             'post' => $post,
+            'comments' => $comments,
         ]);
     }
 

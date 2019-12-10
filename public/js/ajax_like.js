@@ -19,7 +19,19 @@ function onClickBtnLike(event) {
         // si le statut vaut 403 = utilisateur non connecté, renvoi alert
         .catch(function (error) {
             if(error.response.status === 403 ) {
-                window.alert('vous devez etre connecté pour aimé l\'article');
+                // window.alert('vous devez etre connecté pour aimé l\'article');
+                // document.location.href="/login";
+
+                // test dialogwindow
+                // const favDialog = document.getElementById('dialogModal');
+                // favDialog.showModal();
+                // const dialogBtnLogin = document.getElementById('dialogBtnLogin');
+                // function redirectLogin() {
+                //     document.location.href="/login";
+                // }
+                // dialogBtnLogin.addEventListener('click', redirectLogin)
+                // end test dialogwindow
+
             } else {
                 //pour toute autre staut que 200 ou 403, afficher une alerte.
                 window.alert('une erreur s\'est produite');
