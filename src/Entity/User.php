@@ -50,6 +50,11 @@ class User implements UserInterface
      */
     private $commentLikes;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nickName;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
@@ -224,6 +229,18 @@ class User implements UserInterface
                 $commentLike->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNickName(): ?string
+    {
+        return $this->nickName;
+    }
+
+    public function setNickName(string $nickName): self
+    {
+        $this->nickName = $nickName;
 
         return $this;
     }

@@ -10,11 +10,20 @@ function onClickBtnLike(event)
     const url = this.href;
     const spanCount = this.querySelector('span.js-likes');
     const icone = this.querySelector('i');
+    const users = this.getAttributeNode('aria-label');
+    const test = this.classList;
 
     axios.get(url).then(function(response) {
         // console.log(response);
         // recupère la variable likes dans la data de axios, voir console.log()
         spanCount.textContent = response.data.likes;
+        if (users) {
+            users.textContent = response.data.users;
+        }
+        if (response.data.likes === 0) {
+            console.log(test);
+            users.textContent = 'No like';
+        }
 
         // modification des icone <i> en fonction de leur affichage actuelle
         if(icone.classList.contains('fas')) icone.classList.replace('fas', 'far');
@@ -22,6 +31,7 @@ function onClickBtnLike(event)
     })
         // si le statut vaut 403 = utilisateur non connecté, renvoi alert
         .catch(function (error) {
+            console.log(error.response.status);
             if(error.response.status !== 403 && error.response.status !== 200  ) {
                 //pour toute autre staut que 200 ou 403, afficher une alerte.
                 window.alert('une erreur s\'est produite');
@@ -44,18 +54,20 @@ function onClickBtnLike(event)
             }
         });
 }
-/*
-END - js to like post
-*/
-/*
-START - js to like comment
-*/
 
 // recupére tous les liens <a> avec la classe js-like et boucle dessus
 document.querySelectorAll('a.js-like').forEach(function(link){
     // ecoute l'evenement click de chaque lien et crée une fonction onClickBtnLike
     link.addEventListener('click', onClickBtnLike);
 });
+
+/*
+END - js to like post
+*/
+
+/*
+START - js to like comment
+*/
 
 function onClickBtnLikeComment(event) {
     event.preventDefault();

@@ -1,0 +1,32 @@
+/*-------------------- postByID -----------------------*/
+
+#post-by-id .info-users-like {
+    position: relative;
+    text-transform: lowercase;
+}
+/* on génère un élément :after lors du survol et du focus :*/
+#post-by-id .info-users-like:hover:after {
+    content: attr(aria-label);  /* on affiche aria-label */
+    position: absolute;
+    bottom: 35px;
+    left: 75%;
+    transform: translateX(-50%); /* on centre horizontalement  */
+    z-index: 1; /* pour s'afficher au dessus des éléments en position relative */
+    /*white-space: nowrap;  !* on interdit le retour à la ligne*!*/
+    padding: 4px 14px;
+    background: #f0f0f0;
+    color: black;
+    border-radius: 4px;
+    font-size: 15px;
+    text-transform: lowercase;
+}
+/* on génère un second élément en :before pour la flèche */
+#post-by-id .info-users-like:hover:before {
+    content: "▼";
+    position: absolute;
+    top: -17px;
+    left: 62%;
+    transform: translateX(-50%); /* on centre horizontalement  */
+    font-size: 20px;
+    color: #f0f0f0;
+}

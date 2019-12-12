@@ -3,7 +3,7 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div id="post-by-id" class="container">
         <h1 class="my-3">{{ post.title }}</h1>
         <div class="row">
             <div class="col-12 mb-12">
@@ -15,7 +15,12 @@
                             {% if not is_granted('ROLE_USER') %}
                                 data-toggle="modal" data-target="#exampleModal"
                             {% endif %}
-                            href="{{ path('post_like', { 'id' : post.id }) }}" class="btn btn-link js-like">
+                            href="{{ path('post_like', { 'id' : post.id }) }}" class="info-users-like btn btn-link js-like"
+                            {% if post.likes|length != 0 %}
+                            aria-label="{% for postLike in post.likes %}{{ postLike.user.nickName }}{% endfor %}"
+                            {% else %}
+                            aria-label="No like"
+                            {% endif %}>
                         {% if app.user and post.isLikedByUser(app.user) %}
                             <i class="fas fa-thumbs-up"></i>
                         {% else %}
@@ -25,27 +30,7 @@
                         <span class="js-label">j'aime</span>
                     </a>
                     <h3 class="">Commentaires : </h3>
-                    {% for comment in comments %}
-                    <div class="row">
-                        <div class="col-12 px-4">
-                        <div class="d-inline">{{ comment.user.email }} : </div>
-                        <a
-                                {% if not is_granted('ROLE_USER') %}
-                                    data-toggle="modal" data-target="#exampleModal"
-                                {% endif %}
-                                href="{{ path('comment_like', { 'id' : comment.id }) }}" class="btn btn-link js-like-comment">
-                                {% if app.user and comment.isLikedByUser(app.user) %}
-                                    <i class="fas fa-thumbs-up"></i>
-                                {% else %}
-                                    <i class="far fa-thumbs-up"></i>
-                                {% endif %}
-                            <span class="js-likes-comment">{{ comment.commentLikes | length }}</span>
-                            <span class="js-label-comment">j'aime</span>
-                        </a>
-                        <p class="text-muted">{{ comment.content }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
+                   {% include 'comment/_comments.html.twig' %}
                 </div>
             </div>
         </div>
