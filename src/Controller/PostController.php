@@ -40,11 +40,9 @@ class PostController extends AbstractController
         $post = $this->getDoctrine()
             ->getRepository(Post::class)
             ->findOneBy(['id' => $id ]);
-//        var_dump($post->getComments());
         $comments = $this->getDoctrine()
             ->getRepository(Comment::class)
             ->findBy(['post' => $post ]);
-//        var_dump($comments);
 
         return $this->render('post/postById.html.twig', [
             'post' => $post,
@@ -85,6 +83,7 @@ class PostController extends AbstractController
                 'code' => 200,
                 'message' => 'like supprimé',
                 'likes' => $postLikeRepo->count(['post' => $post]),
+                'users' => $this->allUsersLikeByPost($postLikeRepo, $post),
             ], 200);
         }
 
@@ -99,6 +98,23 @@ class PostController extends AbstractController
             'code' => 200,
             'message' => 'j\'aime ajouté',
             'likes' => $postLikeRepo->count(['post' => $post]),
+            'users' => $this->allUsersLikeByPost($postLikeRepo, $post),
         ], 200);
+    }
+
+    /**
+     * recupérer un tableau d'utilisateurs qui aiment le post
+     * @param PostLikeRepository $postLikeRepo
+     * @param Post $post
+     * @return array|string
+     */
+    public function allUsersLikeByPost(PostLikeRepository $postLikeRepo, Post $post) {
+        $users = [];
+        $postLikes = $postLikeRepo->findBy(['post' => $post]);
+        foreach ($postLikes as $postLike) {
+            $users[] = $postLike->getUser()->getNickName();
+        }
+        $users = implode(" ", $users);
+        return $users;
     }
 }

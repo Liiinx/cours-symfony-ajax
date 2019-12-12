@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\PostLikeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -54,4 +55,5 @@ class PostLike
 
         return $this;
     }
+
 }
