@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentLikeRepository")
@@ -18,6 +19,7 @@ class CommentLike
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Comment", inversedBy="commentLikes")
+     * @JoinColumn(name="comment", referencedColumnName="id", onDelete="CASCADE")
      */
     private $comment;
 

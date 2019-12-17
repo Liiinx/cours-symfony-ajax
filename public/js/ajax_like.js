@@ -4,14 +4,13 @@ START - js to like post
 function onClickBtnLike(event)
 {
     // annule le comportement du lien
-    event.preventDefault()
+    event.preventDefault();
 
     // recupère les element de la page
     const url = this.href;
     const spanCount = this.querySelector('span.js-likes');
     const icone = this.querySelector('i');
     const users = this.getAttributeNode('aria-label');
-    const test = this.classList;
 
     axios.get(url).then(function(response) {
         // console.log(response);
@@ -21,7 +20,6 @@ function onClickBtnLike(event)
             users.textContent = response.data.users;
         }
         if (response.data.likes === 0) {
-            console.log(test);
             users.textContent = 'No like';
         }
 

@@ -19,3 +19,24 @@
         </div>
     </div>
 {% endfor %}
+
+<div class="row">
+    <div class="col-12 px-4">
+        {{ form_start(form, {
+            'attr': {
+                'class': 'form-inline',
+                'novalidate': 'novalidate',
+            }
+        } ) }}
+
+        <fieldset>
+
+        <div class="form-group">
+
+        {{ form_row(form.content) }}
+        </div>
+
+        </fieldset>
+        {{ form_end(form) }}
+    </div>
+</div>

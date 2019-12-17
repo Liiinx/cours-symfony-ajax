@@ -22,7 +22,6 @@ class CommentController extends AbstractController
 //        ]);
 //    }
 
-
     /**
      * permet de liker ou unliker un commentaire avec reponse en json, pour ajax.
      *
