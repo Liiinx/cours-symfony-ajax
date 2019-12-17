@@ -21,22 +21,22 @@
 {% endfor %}
 
 <div class="row">
+
+    {% if is_granted('ROLE_USER') %}
     <div class="col-12 px-4">
-        {{ form_start(form, {
-            'attr': {
-                'class': 'form-inline',
-                'novalidate': 'novalidate',
-            }
-        } ) }}
-
+        {{ form_start(form, {'attr': {'class': 'px-4'}} ) }}
         <fieldset>
-
-        <div class="form-group">
-
-        {{ form_row(form.content) }}
-        </div>
-
+            <div class="form-group">
+                {{ form_row(form.content) }}
+            </div>
         </fieldset>
+            {{ form_row(form.save) }}
         {{ form_end(form) }}
     </div>
+    {% else %}
+        <div class="col-12 px-4">
+            <p>Connectez-vous pour ajouter un commentaire</p>
+            <a href="{{ path('login') }}" class="btn btn-outline-success">Connexion</a>
+        </div>
+    {% endif %}
 </div>

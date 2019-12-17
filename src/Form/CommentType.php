@@ -18,12 +18,13 @@ class CommentType extends AbstractType
             ->add('content', TextareaType::class, [
                 'label'  => 'Votre commentaire',
                 'attr'   =>  ['class'   => 'form-control',
-                    'rows' => '3',
+                    'rows' => '2',
                     ]
             ])
             ->add('user', HiddenType::class)
             ->add('post', HiddenType::class)
             ->add('save', SubmitType::class, [
+                'label'  => 'Enregistrer',
                 'attr'   =>  ['class'   => 'btn btn-primary']
             ])
         ;
