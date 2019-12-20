@@ -4,30 +4,30 @@ START - js to like post
 function onClickBtnLike(event)
 {
     // annule le comportement du lien
-    event.preventDefault()
+    event.preventDefault();
 
     // recupère les element de la page
     const url = this.href;
     const spanCount = this.querySelector('span.js-likes');
     const icone = this.querySelector('i');
     const users = this.getAttributeNode('aria-label');
-    const test = this.classList;
 
     axios.get(url).then(function(response) {
         // console.log(response);
         // recupère la variable likes dans la data de axios, voir console.log()
         spanCount.textContent = response.data.likes;
+        // modification des icone <i> en fonction de leur affichage actuelle
+        if(icone.classList.contains('fas')) icone.classList.replace('fas', 'far');
+        else icone.classList.replace('far', 'fas');
+
+        // ajoute la liste des users qui ont liké ou no like.
         if (users) {
             users.textContent = response.data.users;
         }
         if (response.data.likes === 0) {
-            console.log(test);
             users.textContent = 'No like';
         }
 
-        // modification des icone <i> en fonction de leur affichage actuelle
-        if(icone.classList.contains('fas')) icone.classList.replace('fas', 'far');
-        else icone.classList.replace('far', 'fas');
     })
         // si le statut vaut 403 = utilisateur non connecté, renvoi alert
         .catch(function (error) {

@@ -9,6 +9,12 @@
         <script src="https://kit.fontawesome.com/527719ba1b.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="/css/stylesheet.css">
         {% block stylesheets %}{% endblock %}
+        <script type="text/javascript" src="https://cdn.weglot.com/weglot.min.js"></script>
+        <script>
+            Weglot.initialize({
+                api_key: 'wg_c6c053498a4d77ff8dbbedc543349ea37'
+            });
+        </script>
     </head>
     <body>
         {% include 'parts/navbar.html.twig' %}

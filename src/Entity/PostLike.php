@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PostLikeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostLikeRepository")
@@ -19,6 +20,7 @@ class PostLike
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="likes")
+     * @JoinColumn(name="post", referencedColumnName="id", onDelete="CASCADE")
      */
     private $post;
 
