@@ -8,7 +8,9 @@ use App\Entity\PostLike;
 use App\Form\CommentType;
 use App\Repository\PostLikeRepository;
 use App\Repository\PostRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+//use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,12 +23,25 @@ class PostController extends AbstractController
      *
      * @Route("/", name="homepage")
      * @param PostRepository $repo
+     * @param Request $request
+     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function index(PostRepository $repo)
+    public function index(PostRepository $repo, Request $request, PaginatorInterface $paginator)
     {
+        $posts = $repo->findAll();
+
+        $posts = $paginator->paginate(
+            $posts, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            8 /*limit per page*/
+        );
+
+        $posts->setCustomParameters([
+            'align' => 'center',
+        ]);
         return $this->render('post/index.html.twig', [
-            'posts' => $repo->findAll(),
+            'posts' => $posts,
         ]);
     }
 
@@ -50,16 +65,13 @@ class PostController extends AbstractController
         //recupère l'utilisateur connecté
         $user  = $this->getUser();
 
-        // form comment
+        // form comment : ajoute un commentaire au post
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // $form->getData() holds the submitted values
-            // but, the original `$task` variable has also been updated
+            // $form->getData() recupère les données
             $comment = $form->getData();
-            // ... perform some action, such as saving the task to the database
-            // for example, if Task is a Doctrine entity, save it!
             $comment->setUser($user);
             $comment->setPost($post);
              $entityManager = $this->getDoctrine()->getManager();
@@ -92,11 +104,11 @@ class PostController extends AbstractController
      * @Route("/post/{id}/like", name="post_like")
      *
      * @param Post $post
-     * @param ObjectManager $manager
+     * @param EntityManagerInterface $manager
      * @param PostLikeRepository $postLikeRepo
      * @return Response
      */
-    public function like(Post $post, ObjectManager $manager, PostLikeRepository $postLikeRepo) : Response
+    public function like(Post $post, EntityManagerInterface $manager, PostLikeRepository $postLikeRepo) : Response
     {
         //recupère l'utilisateur connecté
         $user  = $this->getUser();

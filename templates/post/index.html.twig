@@ -5,6 +5,9 @@
 {% block body %}
     <div class="container">
         <h1 class="my-3">Nos articles</h1>
+        <div class="count">
+            <span>Nombre total d'articles : {{ posts.getTotalItemCount }}</span>
+        </div>
         <div class="row">
             {% for post in posts %}
                 <div class="col-3 mb-3">
@@ -29,6 +32,10 @@
                     </div>
                 </div>
             {% endfor %}
+        </div>
+        {# display navigation #}
+        <div class="navigation">
+            {{ knp_pagination_render(posts) }}
         </div>
     </div>
     {% include 'parts/_dialog.html.twig' %}

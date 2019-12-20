@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\CommentLike;
 use App\Repository\CommentLikeRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,11 +27,11 @@ class CommentController extends AbstractController
      *
      * @Route("/comment/{id}/like", name="comment_like")
      * @param Comment $comment
-     * @param ObjectManager $manager
+     * @param EntityManagerInterface $manager
      * @param CommentLikeRepository $commentLikeRepository
      * @return Response
      */
-    public function likeComment(Comment $comment, ObjectManager $manager, CommentLikeRepository $commentLikeRepository) :Response
+    public function likeComment(Comment $comment, EntityManagerInterface $manager, CommentLikeRepository $commentLikeRepository) :Response
     {
         //recupère l'utilisateur connecté
         $user  = $this->getUser();
